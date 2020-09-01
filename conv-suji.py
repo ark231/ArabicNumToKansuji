@@ -50,7 +50,7 @@ if "--debug" in argv:
     print("argv:{argv}\nargc:{argc}\nargv[argc-1]:{argv1}".format(argv=argv,argc=argc,argv1=argv[argc-1]),file=sys.stderr)
     options["debug"]=True
 if "-h" in argv:
-    print("conv-suji [option]")
+    print("conv-suji [options...] [number]")
     print("-m, --mixed   :漢数字と算用数字の折衷表記　例　1234万5678")
     print("--stdin       :パイプで送られてきた入力を処理する")
     print("--debug       :デバッグ表示をオンにする")
