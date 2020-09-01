@@ -37,11 +37,33 @@ kansuji_big=(
     )
 argv=sys.argv
 argc=len(argv)
-print("argv:{argv}\nargc:{argc}\nargv[argc-1]:{argv1}".format(argv=argv,argc=argc,argv1=argv[argc-1]))
-intmp=argv[argc-1]
+#print("argv:{argv}\nargc:{argc}\nargv[argc-1]:{argv1}".format(argv=argv,argc=argc,argv1=argv[argc-1]))
+#----- options -----
+options={"mixed":False,"debug":False}
+if "--mixed" in argv or "-m" in argv:
+    options["mixed"]=True
+if "--stdin" in argv:
+    intmp=sys.stdin.read()
+else:
+    intmp=argv[argc-1]
+if "--debug" in argv:
+    print("argv:{argv}\nargc:{argc}\nargv[argc-1]:{argv1}".format(argv=argv,argc=argc,argv1=argv[argc-1]),file=sys.stderr)
+    options["debug"]=True
+if "-h" in argv:
+    print("conv-suji [option]")
+    print("-m, --mixed   :漢数字と算用数字の折衷表記　例　1234万5678")
+    print("--stdin       :パイプで送られてきた入力を処理する")
+    print("--debug       :デバッグ表示をオンにする")
+    print("-h, --help    :このヘルプを表示して終了する")
+    sys.exit(0)
+
 checked=re.search('[^\d.]',intmp)
-print(checked) 
-if checked != None and  checked.group(0) != '\n':
+
+if options["debug"] == True:
+    print("intmp:{intmp}".format(intmp=intmp),file=sys.stderr)
+    print(checked,file=sys.stderr) 
+
+if checked != None and checked.group(0) != '\n':
     print("数の入力には数字と小数点しか使えません。")
     sys.exit(1)
 if re.search('\.',intmp) == None: 
@@ -68,13 +90,16 @@ for cnow in reversed(intmp):
                     result_tmp+=(kansuji_big[kurai_bigger][0]+cnow)
                 kurai+=1
                 kurai_bigger+=1
-            else:
+            elif options["mixed"] == False:
                 if cnow == '0':
                     result_tmp+=''
                 elif cnow == '1':
                     result_tmp+=(kansuji_kurai[kurai%4][0])
                 else:
                     result_tmp+=(kansuji_kurai[kurai%4][0]+cnow)
+                kurai+=1
+            else:
+                result_tmp+=cnow
                 kurai+=1
         else:
             result_tmp+=cnow
