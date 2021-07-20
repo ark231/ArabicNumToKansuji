@@ -102,24 +102,24 @@ for cnow in reversed(intmp):
         if kurai_bigger<=len(kansuji_big):
             if kurai%4==0:
                 if num_zeros == 4:
-                    result_tmp=result_tmp.replace(kansuji_big[kurai_bigger-1][0],'')
+                    result_tmp=result_tmp.replace((kansuji_big[kurai_bigger-1][0])[::-1],'')
                     if options["mixed"] == True:
                         result_tmp=result_tmp[:len(result_tmp)-4]
                 num_zeros=0
                 if cnow == '0':
                     if options["all"] == True:
-                        result_tmp+=(kansuji_big[kurai_bigger][0])
+                        result_tmp+=((kansuji_big[kurai_bigger][0])[::-1])
                     else:
-                        result_tmp+=(kansuji_big[kurai_bigger][0]+cnow)
+                        result_tmp+=((kansuji_big[kurai_bigger][0])[::-1]+cnow)
                     num_zeros+=1
                 elif cnow == '1':
                     if options["all"] == True:
                         cnow=kansuji_figure[int(cnow)][0]
-                    result_tmp+=(kansuji_big[kurai_bigger][0]+cnow)
+                    result_tmp+=((kansuji_big[kurai_bigger][0])[::-1]+cnow)
                 else:
                     if options["all"] == True:
                         cnow=kansuji_figure[int(cnow)][0]
-                    result_tmp+=(kansuji_big[kurai_bigger][0]+cnow)
+                    result_tmp+=((kansuji_big[kurai_bigger][0])[::-1]+cnow)
                 kurai+=1
                 kurai_bigger+=1
             else:
