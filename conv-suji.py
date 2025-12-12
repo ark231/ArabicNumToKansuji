@@ -98,10 +98,15 @@ if "-h" in argv:
     print("-m, --mixed       :漢数字と算用数字の折衷表記 例 1234万5678")
     print("-a, --all-kansuji :完全な漢数字表記 例 千百三十四万五千六百七十八")
     print("-s, --for-speech  :単位をひらがな表記 (a/mどちらかと一緒に指定してください)")
+    print("-e, --eval        :numberをeval()で評価する")
     print("--stdin           :パイプで送られてきた入力を処理する")
     print("--debug           :デバッグ表示をオンにする")
     print("-h, --help        :このヘルプを表示して終了する")
     sys.exit(0)
+
+if "-e"in argv or "--eval" in argv:
+    import math
+    intmp=f"{eval(intmp)}"
 
 checked = re.search('[^0-9.,]', intmp)
 
@@ -130,7 +135,7 @@ for cnow in reversed(intmp):
         result_tmp += cnow
         bigger_than_1 == True
     elif bigger_than_1 == True:
-        if kurai_bigger <= len(kansuji_big):
+        if kurai_bigger < len(kansuji_big):
             if kurai % 4 == 0:
                 if num_zeros == 4:
                     result_tmp = result_tmp.replace((kansuji_big[kurai_bigger - 1][0])[::-1], '')
@@ -170,7 +175,9 @@ for cnow in reversed(intmp):
                     result_tmp += cnow
                 kurai += 1
         else:
-            result_tmp += cnow
+            if kurai%4==0:
+                result_tmp+=","
+            result_tmp +=cnow
             kurai += 1
 result = result_tmp[::-1]
 print(result)
